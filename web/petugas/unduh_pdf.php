@@ -4,7 +4,8 @@
  * Halaman ini otomatis memicu dialog cetak → pengguna pilih "Simpan sebagai PDF".
  */
 require_once __DIR__ . '/../includes/bootstrap.php';
-require_role('Petugas');
+// Admin & Petugas sama-sama bisa mengunduh laporan PDF miliknya.
+require_login();
 
 $u   = current_user();
 $pdo = db();

@@ -39,6 +39,9 @@ $is_admin = $u && $u['role'] === 'Admin';
     <nav class="nav flex-column">
       <?php if ($is_admin): ?>
         <a href="<?= e(url('admin/dashboard.php')) ?>"        class="<?= $active_menu==='dashboard'?'active':'' ?>"><i class="bi bi-speedometer2"></i> Dashboard</a>
+        <a href="<?= e(url('petugas/deteksi.php')) ?>"        class="<?= $active_menu==='deteksi'?'active':'' ?>"><i class="bi bi-camera"></i> Deteksi Penyakit</a>
+        <a href="<?= e(url('petugas/riwayat.php')) ?>"        class="<?= $active_menu==='riwayat'?'active':'' ?>"><i class="bi bi-clock-history"></i> Riwayat Saya</a>
+        <hr class="border-light my-2 mx-3 opacity-25">
         <a href="<?= e(url('admin/kelola_petugas.php')) ?>"   class="<?= $active_menu==='petugas'?'active':'' ?>"><i class="bi bi-people"></i> Kelola Petugas</a>
         <a href="<?= e(url('admin/kelola_penyakit.php')) ?>"  class="<?= $active_menu==='penyakit'?'active':'' ?>"><i class="bi bi-journal-medical"></i> Kelola Penyakit</a>
         <a href="<?= e(url('admin/monitor_riwayat.php')) ?>"  class="<?= $active_menu==='monitor'?'active':'' ?>"><i class="bi bi-clipboard-data"></i> Monitor Riwayat</a>

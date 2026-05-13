@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../includes/bootstrap.php';
-require_role('Petugas');
+// Admin & Petugas sama-sama memiliki halaman riwayat pribadi.
+require_login();
 
 $u   = current_user();
 $pdo = db();

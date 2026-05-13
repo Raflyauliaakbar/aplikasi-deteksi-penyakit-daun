@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../includes/bootstrap.php';
-require_role('Petugas');
+// Admin & Petugas sama-sama boleh melakukan deteksi.
+require_login();
 
 $u   = current_user();
 $pdo = db();
