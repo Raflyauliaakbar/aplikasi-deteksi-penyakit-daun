@@ -179,3 +179,30 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+
+# ============================================================
+# Project specific
+# ============================================================
+
+# File model YOLOv8 (ukuran besar, tidak di-commit)
+ai_server/model/*.pt
+ai_server/model/*.onnx
+
+# Upload citra pengguna
+web/uploads/original/*
+web/uploads/detected/*
+!web/uploads/**/.gitkeep
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Log
+*.log
