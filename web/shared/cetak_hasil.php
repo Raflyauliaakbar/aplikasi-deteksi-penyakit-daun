@@ -1,0 +1,25 @@
+<?php
+require_once __DIR__.'/../includes/bootstrap.php';
+require_login();
+$u=current_user();$pdo=db();
+$id=(int)($_GET['id']??0);
+$stmt=$pdo->prepare('SELECT h.*,p.nama_penyakit,p.deskripsi,p.solusi FROM history_deteksi h JOIN penyakit p ON h.id_penyakit=p.id_penyakit WHERE h.id_deteksi=? AND h.id_user=?');
+$stmt->execute([$id,$u['id_user']]);$row=$stmt->fetch();
+if(!$row)die('Data tidak ditemukan.');
+require_once __DIR__.'/../lib/fpdf/fpdf.php';
+$pdf=new FPDF('P','mm','A4');$pdf->AddPage();
+$pdf->SetFont('Arial','B',16);$pdf->Cell(0,10,'Laporan Deteksi Penyakit Daun Jeruk',0,1,'C');
+$pdf->SetFont('Arial','',10);$pdf->Cell(0,6,'Sistem YOLOv8 - '.date('d/m/Y H:i'),0,1,'C');$pdf->Ln(8);
+$pdf->SetFont('Arial','B',10);$pdf->Cell(45,7,'ID Deteksi',1);$pdf->SetFont('Arial','',10);$pdf->Cell(0,7,'#'.$row['id_deteksi'],1,1);
+$pdf->SetFont('Arial','B',10);$pdf->Cell(45,7,'Tanggal',1);$pdf->SetFont('Arial','',10);$pdf->Cell(0,7,date('d/m/Y H:i',strtotime($row['tgl_deteksi'])),1,1);
+$pdf->SetFont('Arial','B',10);$pdf->Cell(45,7,'Operator',1);$pdf->SetFont('Arial','',10);$pdf->Cell(0,7,$u['nama_lengkap'],1,1);
+$pdf->SetFont('Arial','B',10);$pdf->Cell(45,7,'Hasil',1);$pdf->SetFont('Arial','',10);$pdf->Cell(0,7,$row['nama_penyakit'],1,1);
+$pdf->SetFont('Arial','B',10);$pdf->Cell(45,7,'Akurasi',1);$pdf->SetFont('Arial','',10);$pdf->Cell(0,7,number_format($row['akurasi']*100,2).'%',1,1);
+$pdf->SetFont('Arial','B',10);$pdf->Cell(45,7,'File',1);$pdf->SetFont('Arial','',10);$pdf->Cell(0,7,$row['nama_file'],1,1);
+$pdf->Ln(6);
+$img=UPLOAD_DIR_DETECTED.$row['nama_file'];
+if(file_exists($img))$pdf->Image($img,15,$pdf->GetY(),80);
+$pdf->Ln(55);
+$pdf->SetFont('Arial','B',11);$pdf->Cell(0,7,'Deskripsi:',0,1);$pdf->SetFont('Arial','',9);$pdf->MultiCell(0,5,$row['deskripsi']);$pdf->Ln(4);
+$pdf->SetFont('Arial','B',11);$pdf->Cell(0,7,'Solusi:',0,1);$pdf->SetFont('Arial','',9);$pdf->MultiCell(0,5,$row['solusi']);
+$pdf->Output('D','Deteksi_'.$id.'.pdf');
